@@ -1,6 +1,5 @@
 discord.py
 asyncio
-os
 json
 youtube_dl
 urllib.parse 
