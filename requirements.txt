@@ -1,7 +1,6 @@
 discord.py
 asyncio
 youtube_dl
-urllib.parse 
-urllib.request
+urllib
 re
 itertools
