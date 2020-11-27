@@ -1,2 +1,8 @@
 discord.py
 asyncio
+random
+os
+json
+youtube_dl
+urllib.parse, urllib.request,re
+itertools
