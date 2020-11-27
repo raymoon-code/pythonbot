@@ -1,6 +1,6 @@
 discord.py
 asyncio
-random
+random.py
 os
 json
 youtube_dl
