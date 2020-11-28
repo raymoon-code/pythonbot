@@ -34,7 +34,7 @@ class lvlCog(commands.Cog, name="Leveling"):
 
             xp_start= int(result2[1])
             lvl_start= int(result2[2])
-            xp_end = math.floor(5 *(lvl_start ^2)+ 50 * lvl_start +100)
+            xp_end = math.floor(5 *(pow(lvl_start ,2))+ 50 * lvl_start +100)
             if xp_end < xp_start:
                 await message.channel.send(f'{message.author.mention} has leveled up to level {lvl_start+1}')
                 sql =("UPDATE levels SET lvl = ? WHERE guild_id= ? and user_id=?")
