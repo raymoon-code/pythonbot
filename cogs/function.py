@@ -51,9 +51,10 @@ class Func(commands.Cog):
         else:
             await ctx.send("No facts are available for that animal.")
 
-    @command(name="do")
+    @command(name="d")
     @cooldown(3, 60, BucketType.guild)
     async def do_act(self, ctx, animu:str, Target:DiscordMember):
+        """Action available 'pat','wink','hug'."""
         if(animu:=animu.lower()) in ("wink", 'pat', 'hug'):
 
             img_url = f"https://some-random-api.ml/animu/{animu}"
