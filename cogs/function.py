@@ -80,3 +80,4 @@ class Func(commands.Cog):
 
 def setup(client):
     client.add_cog(Func(client))
+    print(Function is loaded)
