@@ -4,8 +4,9 @@ import random
 import os
 import json
 import youtube_dl
-
-
+from discord import utils, Activity, ActivityType, Client, Embed, Colour
+from discord.errors import Forbidden
+from typing import Optional
 import asyncio
 import urllib.parse, urllib.request, re
 import sqlite3
@@ -13,9 +14,11 @@ from random import choice
 from discord.voice_client import VoiceClient
 from discord.ext import commands, tasks
 from itertools import cycle
+from discord import Member as DiscordMember
+from discord import guild
 
 youtube_dl.utils.bug_reports_message = lambda: ''
-
+# Guild = object()
 ytdl_format_options = {
     'format': 'bestaudio/best',
     'outtmpl': '%(extractor)s-%(id)s-%(title)s.%(ext)s',
@@ -347,5 +350,46 @@ async def youtube(ctx, *, search):
     )
     search_results = re.findall(r'watch\?v=(\S{11})',htm_content.read().decode())
     await ctx.send('https://www.youtube.com/watch?v=' + search_results[0])
+
+
+
+
+
+
+@client.command(name="userinfo")
+async def user_info(Ctx, Target:Optional[DiscordMember]):
+    """Displays user info. If no member is given, it defaults to the command invoker."""
+    if Target is None:
+        Target = Ctx.author
+
+    header = f"User information - {Target.display_name}\n\n"
+    rows = {
+        "Account name"     : Target.name,
+        "Disciminiator"    : Target.discriminator,
+        "ID"               : Target.id,
+        "Is bot"           : "Yes" if Target.bot else "No",
+        "Top role"         : Target.top_role,
+        "Nº of roles"      : len(Target.roles),
+        "Current status"   : str(Target.status).title(),
+        "Current activity" : f"{str(Target.activity.type).title().split('.')[1]} {Target.activity.name}" if Target.activity is not None else "None",
+        "Created at"       : Target.created_at.strftime("%d/%m/%Y %H:%M:%S"),
+        "Joined at"        : Target.joined_at.strftime("%d/%m/%Y %H:%M:%S"),
+    }
+    table = header + "\n".join([f"{key}{' '*(max([len(key) for key in rows.keys()])+2-len(key))}{value}" for key, value in rows.items()])
+    await Ctx.send(f"```{table}```{Target.avatar_url}")
+    return
+
+@client.command(name="slap")
+async def slap_member(Ctx, Target:DiscordMember):
+    """Slaps a member."""
+    # await Ctx.send(f"**{Ctx.author.display_name}** just slapped {Target.mention} silly!")
+    rlist = ['https://media.giphy.com/media/k1uYB5LvlBZqU/giphy.gif','https://media.giphy.com/media/Zau0yrl17uzdK/giphy.gif','https://media.giphy.com/media/a7HKjDb3UJ0kM/giphy.gif']
+    embed = discord.Embed(colour=0x95efcc,title=f"**{Ctx.author.display_name}** just slapped {Target.name} silly!:clap: :clap: ")
+    embed.set_image(url=random.choice(rlist))
+    await Ctx.send(embed=embed)
+
+
+
+
 
 client.run('NzIxOTA0MzIwMzIwMjQxNzE1.XubTyg.VxjCavsNueBonohM435SioOrzws')
