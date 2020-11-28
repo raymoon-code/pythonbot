@@ -67,7 +67,7 @@ class Func(commands.Cog):
             async with request('GET',img_url,headers={}) as resp:
                 if resp.status == 200:
 
-                    embed = Embed(title=f'**{ctx.author.display_name.title()}** just {animu} {Target.name.upper()}  :laughing:  :laughing:  :laughing: !!!',
+                    embed = Embed(title=f'**{ctx.author.display_name.title()}** just {animu.title()} {Target.name.upper()}  :laughing:  :laughing:  :laughing: !!!',
                                   colour=ctx.author.colour)
                     if img_link is not None:
                         embed.set_image(url=img_link)
