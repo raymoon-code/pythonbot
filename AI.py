@@ -393,7 +393,7 @@ async def slap_member(Ctx, Target:DiscordMember):
 async def change_nick(ctx,Target:DiscordMember,nick):
     old = Target.display_name
     await Target.edit(nick=nick)
-    embed = Embed(Colour=0x95efcc , title=f'{old.title()} nickname has change to {Target.display_name} :partying_face: :partying_face:  ',description=f'Discriminator: {Target.discriminator}\n'
+    embed = Embed(Colour=0x95efcc , title=f'{old.title()} nickname has changed to {Target.display_name} :partying_face: :partying_face:  ',description=f'Discriminator: {Target.discriminator}\n'
                                                                                                                                                       f'Id           : {Target.id}'  )
     embed.set_thumbnail(url=f'{Target.avatar_url}')
     embed.set_footer(text=f'{Target.guild}',icon_url=f'{Target.guild.icon_url}')
