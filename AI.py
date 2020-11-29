@@ -16,6 +16,7 @@ from discord.ext import commands, tasks
 from itertools import cycle
 from discord import Member as DiscordMember
 from discord import guild
+import datetime
 
 youtube_dl.utils.bug_reports_message = lambda: ''
 # Guild = object()
@@ -387,7 +388,17 @@ async def slap_member(Ctx, Target:DiscordMember):
     embed = discord.Embed(colour=0x95efcc,title=f"**{Ctx.author.display_name}** just slapped {Target.name} silly!:clap: :clap: ")
     embed.set_image(url=random.choice(rlist))
     await Ctx.send(embed=embed)
-
+                                
+@client.command(name='cn',pass_context=True)
+async def change_nick(ctx,Target:DiscordMember,nick):
+    old = Target.display_name
+    await Target.edit(nick=nick)
+    embed = Embed(Colour=0x95efcc , title=f'{old.title()} nickname has change to {Target.display_name} :partying_face: :partying_face:  ',description=f'Discriminator: {Target.discriminator}\n'
+                                                                                                                                                      f'Id           : {Target.id}'  )
+    embed.set_thumbnail(url=f'{Target.avatar_url}')
+    embed.set_footer(text=f'{Target.guild}',icon_url=f'{Target.guild.icon_url}')
+    embed.timestamp = datetime.datetime.utcnow()
+    await ctx.send(embed=embed)
 
 
 
