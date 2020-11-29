@@ -391,6 +391,7 @@ async def slap_member(Ctx, Target:DiscordMember):
                                 
 @client.command(name='cn',pass_context=True)
 async def change_nick(ctx,Target:DiscordMember,nick):
+    """Change nick name."""                            
     old = Target.display_name
     await Target.edit(nick=nick)
     embed = Embed(Colour=0x95efcc , title=f'{old.title()} nickname has changed to {Target.display_name} :partying_face: :partying_face:  ',description=f'Discriminator: {Target.discriminator}\n'
