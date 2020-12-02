@@ -447,13 +447,8 @@ async def fight(ctx, user1: discord.Member = None, user2: discord.Member = None,
         bet = 10
         await ctx.send(f'default beting amount {bet} coins:coin: :coin: !!!')
 
-    if int(users[str(user.id)]['wallet']) < int(bet):
-
-        await ctx.send(f'You do not have enough money to bet!!!')
-        pass
-
-        return
-    elif user1 == user2:
+    
+    if user1 == user2:
 
         if user1 == ctx.author:
             await ctx.send(f'You can not fight with yourself !!!')
@@ -471,8 +466,12 @@ async def fight(ctx, user1: discord.Member = None, user2: discord.Member = None,
     elif user1 != ctx.author and  user2 != ctx.author:        
         await ctx.send(f'You can not let others people fight with each others !!!')
         pass
-        return                            
-                            
+        return      
+                                
+    elif int(users[str(user.id)]['wallet']) < int(bet):
+        await ctx.send(f'You do not have enough money to bet!!!')
+        pass
+        return                       
  
 
     flist = ['fight.jpg', 'fight1.jpg']
