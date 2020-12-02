@@ -439,13 +439,13 @@ async def fight(ctx, user1: discord.Member = None, user2: discord.Member = None,
     await open_account(ctx.author)
     users = await get_bank_data()
     user = ctx.author
-    print(user, user2)
+    
 
-    if user1 == None or user2 == None:
-        user1 = ctx.author        
+    if str(user1) == None or str(user2) == None:
+        user1 = ctx.author
         user2 = ctx.guild.get_member(721904320320241715)
         bet = 10
-        await ctx.send(f'default beting amount {bet} coins!!!')
+        await ctx.send(f'default beting amount {bet} coins:coin: :coin: !!!')
 
     if int(users[str(user.id)]['wallet']) < int(bet):
 
@@ -453,6 +453,16 @@ async def fight(ctx, user1: discord.Member = None, user2: discord.Member = None,
         pass
 
         return
+    elif user1 == user2:
+
+        if user1 == ctx.author:
+            await ctx.send(f'You can not fight with yourself !!!')
+            pass
+            return
+        else:
+            await ctx.send(f'You can not let people fight with themself !!!')
+            pass
+            return
                             
  
 
