@@ -3,7 +3,9 @@ from discord import Intents
 import random
 import os
 import PIL 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
 from io import BytesIO
 import json
 import youtube_dl
@@ -452,9 +454,9 @@ async def fight(ctx, user: discord.Member = None, user2: discord.Member = None):
         pfp2 = pfp2.resize((200,200))
         fight.paste(pfp,(81,223))
         fight.paste(pfp2,(703,223))
-#         font = ImageFont.truetype('impact.ttf', 45)
-#         draw.text((100,440), str(user_name),(251, 232, 255),  font=font)
-#         draw.text((730,440), str(user2_name),(251, 232, 255),  font=font)
+        font = ImageFont.truetype('impact.ttf', 45)
+        draw.text((100,440), str(user_name),(251, 232, 255),  font=font)
+        draw.text((730,440), str(user2_name),(251, 232, 255),  font=font)
     elif r == 'fight1.jpg':
         pfp = pfp.resize((295,239))
         pfp2 = pfp2.resize((295,239))
