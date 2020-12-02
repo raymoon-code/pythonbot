@@ -462,14 +462,14 @@ async def fight(ctx, user1: discord.Member = None, user2: discord.Member = None,
 
     fight = Image.open(str(r))
 
-    asset = user.avatar_url_as(size = 128)
+    asset = user1.avatar_url_as(size = 128)
     asset2 = user2.avatar_url_as (size = 128)
     data = BytesIO(await asset.read())
     data2 = BytesIO(await asset2.read())
     pfp2 = Image.open(data2)
     pfp = Image.open(data)
     draw = ImageDraw.Draw(fight)
-    user_name = user.name.title()
+    user_name = user1.name.title()
     user2_name = user2.name.title()
     player = [user_name, user2_name]
 
