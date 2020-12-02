@@ -467,8 +467,8 @@ async def fight(ctx, user: discord.Member = None, user2: discord.Member = None):
 
         font = ImageFont.truetype('arial.ttf', 45)
         print(font)                        
-#         draw.text((150,585), user_name, font=font)
-#         draw.text((670,585), user2_name, font=font)
+        draw.text((150,585), user_name, font=font)
+        draw.text((670,585), user2_name, font=font)
 
 
     fight.save('fighting.jpg')
