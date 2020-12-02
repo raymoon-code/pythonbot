@@ -465,7 +465,7 @@ async def fight(ctx, user: discord.Member = None, user2: discord.Member = None):
         fight.paste(pfp2,(616,205))
 
 
-        font = ImageFont.truetype('impacted.ttf', 45)
+        font = ImageFont.truetype('Impacted.ttf', 45)
                           
         draw.text((150,585), user_name,(251, 232, 255), font=font)
         draw.text((670,585), user2_name,(251, 232, 255), font=font)
