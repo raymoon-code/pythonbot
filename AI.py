@@ -21,7 +21,7 @@ from itertools import cycle
 from discord import Member as DiscordMember
 from discord import guild
 import datetime
-import requests
+
 from aiohttp import request
 
 os.chdir(r'\\pythonbot')
