@@ -434,7 +434,7 @@ async def fight(ctx, user: discord.Member = None, user2: discord.Member = None):
 
     flist = ['fight.jpg', 'fight1.jpg']
     r = random.choice(flist)
-    print(r)                         
+                            
 
     fight = Image.open(str(r))
 
@@ -447,7 +447,7 @@ async def fight(ctx, user: discord.Member = None, user2: discord.Member = None):
     draw = ImageDraw.Draw(fight)
     user_name = user.name.title()
     user2_name = user2.name.title()
-#     print(user_name, user2_name)
+
 
     if r == 'fight.jpg':
         pfp = pfp.resize((200,200))
