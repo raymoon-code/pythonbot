@@ -2,14 +2,13 @@ import discord
 from discord import Intents
 import random
 import os
-import PIL 
-from PIL import Image
-from PIL import ImageDraw
-from PIL import ImageFont
-from io import BytesIO
 import json
 import youtube_dl
 from discord import utils, Activity, ActivityType, Client, Embed, Colour
+import PIL
+
+from PIL import Image, ImageDraw, ImageFont
+from io import BytesIO
 from discord.errors import Forbidden
 from typing import Optional
 import asyncio
@@ -22,7 +21,10 @@ from itertools import cycle
 from discord import Member as DiscordMember
 from discord import guild
 import datetime
+import requests
+from aiohttp import request
 
+os.chdir(r'C:\\Users\\Raymoon\\IdeaProjects\\test1')
 youtube_dl.utils.bug_reports_message = lambda: ''
 # Guild = object()
 ytdl_format_options = {
@@ -393,10 +395,15 @@ async def slap_member(Ctx, Target:DiscordMember):
     embed = discord.Embed(colour=0x95efcc,title=f"**{Ctx.author.display_name}** just slapped {Target.name} silly!:clap: :clap: ")
     embed.set_image(url=random.choice(rlist))
     await Ctx.send(embed=embed)
-                                
+
+@client.command(alaises=['t','o'])
+async def to(ctx):
+    await ctx.send(f'channel id: {ctx.guild.id}, member name: {ctx.guild.get_member(291801254747701249)}\n'
+                   f'owner_id: {ctx.guild.owner_id}, total member: {ctx.guild._member_count}\n'
+                   f'server name: {ctx.guild.name}, {ctx.guild._members}' )
+
 @client.command(name='cn',pass_context=True)
 async def change_nick(ctx,Target:DiscordMember,nick):
-    """Change nick name."""                            
     old = Target.display_name
     await Target.edit(nick=nick)
     embed = Embed(Colour=0x95efcc , title=f'{old.title()} nickname has changed to {Target.display_name} :partying_face: :partying_face:  ',description=f'Discriminator: {Target.discriminator}\n'
@@ -405,10 +412,9 @@ async def change_nick(ctx,Target:DiscordMember,nick):
     embed.set_footer(text=f'{Target.guild}',icon_url=f'{Target.guild.icon_url}')
     embed.timestamp = datetime.datetime.utcnow()
     await ctx.send(embed=embed)
-                                
-@client.command(name='w')
+
+@client.command()
 async def wanted(ctx, user: discord.Member = None):
-    """make wanted poster."""                               
     if user == None:
         user = ctx.author
     wanted = Image.open('wanted.jpg')
@@ -426,15 +432,15 @@ async def wanted(ctx, user: discord.Member = None):
     await ctx.send(file =discord.File("profile.jpg"))
 
 @client.command(name='f')
-async def fight(ctx, user: discord.Member = None, user2: discord.Member = None):
-    """fight with people f user1 user2."""   
+async def fight(ctx, user: discord.Member = None, user2: discord.Member = None, *,bet):
+    """fight with people f user1 user2."""
     if user == None:
         user = ctx.author
         user2 = ctx.author
 
     flist = ['fight.jpg', 'fight1.jpg']
     r = random.choice(flist)
-                            
+
 
     fight = Image.open(str(r))
 
@@ -447,6 +453,7 @@ async def fight(ctx, user: discord.Member = None, user2: discord.Member = None):
     draw = ImageDraw.Draw(fight)
     user_name = user.name.title()
     user2_name = user2.name.title()
+    player = [user_name, user2_name]
 
 
     if r == 'fight.jpg':
@@ -454,8 +461,8 @@ async def fight(ctx, user: discord.Member = None, user2: discord.Member = None):
         pfp2 = pfp2.resize((200,200))
         fight.paste(pfp,(81,223))
         fight.paste(pfp2,(703,223))
-        font = ImageFont.truetype('Impacted.ttf', 45)
-                                
+        font = ImageFont.truetype('impact.ttf', 45)
+
         draw.text((100,440), str(user_name),(251, 232, 255), font=font)
         draw.text((730,440), str(user2_name),(251, 232, 255), font=font)
     elif r == 'fight1.jpg':
@@ -465,15 +472,122 @@ async def fight(ctx, user: discord.Member = None, user2: discord.Member = None):
         fight.paste(pfp2,(616,205))
 
 
-        font = ImageFont.truetype('Impacted.ttf', 45)
-                          
+        font = ImageFont.truetype('impact.ttf', 45)
+
         draw.text((150,585), user_name,(251, 232, 255), font=font)
         draw.text((670,585), user2_name,(251, 232, 255), font=font)
 
 
     fight.save('fighting.jpg')
 
-    await ctx.send(file =discord.File("fighting.jpg"))                               
+    await ctx.send(file =discord.File("fighting.jpg"))
+    apikey = "IXK108TOSY48"
+    lmt = 50
+
+    search_term = "anime fight"
+    y = "https://api.tenor.com/v1/search?q=%s&key=%s&limit=%s" % (search_term, apikey, lmt)
+    # get the top 8 GIFs for the search term
+    async with request('GET',y,headers={}) as resp:
+        if resp.status == 200:
+            data = await resp.json()
+            d= data.get('results')
+            giflist = []
+            giflist2 = []
+            for x in range(len(d)):
+                t = d[x]
+                c= t.get('media')
+                giflist.append(c)
+
+            for y in giflist:
+                giflist2.append(y[0].get('mediumgif').get('url'))
+
+            op = random.randint(0,len(giflist2)-1)
+
+            img_url =giflist2[op]
+            # print(img_url)
+        else:
+            img_url = None
+
+
+    async with request('GET',img_url,headers={}) as resp:
+        if resp.status == 200:
+            embed = discord.Embed(title='Fighting :crossed_swords: :crossed_swords: :crossed_swords: ')
+            embed.set_image(url=img_url)
+
+            await ctx.send(embed=embed)
+        else:
+            ctx.send('No API found')
+    await asyncio.sleep(5)
+    winner = random.choice(player)
+    await ctx.send(f'{winner} Won and received {bet} coins!!')
+
+    await open_account(ctx.author)
+    users = await get_bank_data()
+    user = ctx.author
+
+
+    if winner == ctx.author.name.title():
+        users[str(user.id)]['wallet'] += int(bet)
+    else:
+        users[str(user.id)]['wallet'] -= int(bet)
+
+    with open('mainbank.json','w') as f:
+        json.dump(users,f)
+
+@client.command(name='bl')
+async def balance(ctx):
+    await open_account(ctx.author)
+
+    users = await get_bank_data()
+    user = ctx.author
+    wallet_amt = users[str(user.id)]['wallet']
+    bank_amt = users[str(user.id)]['bank']
+    em = discord.Embed(title=f"{ctx.author.name.title()}'s balance", color = discord.Colour.blurple())
+    em.add_field(name= 'Wallet balance', value = wallet_amt)
+    em.add_field(name= 'Bank balance', value = bank_amt)
+    await ctx.send(embed=em)
+
+@client.command()
+async def beg(ctx):
+    await open_account(ctx.author)
+    users = await get_bank_data()
+    user = ctx.author
+    earnings = random.randrange(101)
+    await ctx.send(f'Someone gave you {earnings} coins!!')
+
+    users[str(user.id)]['wallet'] += earnings
+
+    with open('mainbank.json','w') as f:
+        json.dump(users,f)
+
+
+
+async def open_account(user):
+    users = await get_bank_data()
+
+    if str(user.id) in users:
+        return False
+    else:
+        users[str(user.id)] = {}
+        users[str(user.id)]['wallet'] = 0
+        users[str(user.id)]['bank'] = 0
+
+    with open('mainbank.json','w') as f:
+        json.dump(users,f)
+    return True
+
+async def get_bank_data():
+    with open('mainbank.json','r') as f:
+        users = json.load(f)
+    return users
+
+
+
+
+
+
+
+
 
 
 
