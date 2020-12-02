@@ -445,7 +445,7 @@ async def fight(ctx, user: discord.Member = None, user2: discord.Member = None):
     draw = ImageDraw.Draw(fight)
     user_name = user.name.title()
     user2_name = user2.name.title()
-    print(user_name, user2_name)
+#     print(user_name, user2_name)
 
     if r == 'fight.jpg':
         pfp = pfp.resize((200,200))
