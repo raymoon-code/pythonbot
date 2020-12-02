@@ -2,6 +2,8 @@ import discord
 from discord import Intents
 import random
 import os
+from PIL import Image
+from io import BytesIO
 import json
 import youtube_dl
 from discord import utils, Activity, ActivityType, Client, Embed, Colour
@@ -400,6 +402,24 @@ async def change_nick(ctx,Target:DiscordMember,nick):
     embed.set_footer(text=f'{Target.guild}',icon_url=f'{Target.guild.icon_url}')
     embed.timestamp = datetime.datetime.utcnow()
     await ctx.send(embed=embed)
+                                
+@client.command()
+async def wanted(ctx, user: discord.Member = None):
+    if user == None:
+        user = ctx.author
+    wanted = Image.open('wanted.jpg')
+
+    asset = user.avatar_url_as(size = 128)
+    data = BytesIO(await asset.read())
+    pfp = Image.open(data)
+
+    pfp = pfp.resize((280,350))
+
+    wanted.paste(pfp,(217,297))
+
+    wanted.save('profile.jpg')
+
+    await ctx.send(file =discord.File("profile.jpg"))
 
 
 
