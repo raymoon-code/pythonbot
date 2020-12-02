@@ -2,7 +2,7 @@ import discord
 from discord import Intents
 import random
 import os
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 import json
 import youtube_dl
@@ -421,6 +421,52 @@ async def wanted(ctx, user: discord.Member = None):
 
     await ctx.send(file =discord.File("profile.jpg"))
 
+@client.command(name='f')
+async def fight(ctx, user: discord.Member = None, user2: discord.Member = None):
+
+    if user == None:
+        user = ctx.author
+        user2 = ctx.author
+
+    flist = ['fight.jpg', 'fight1.jpg']
+    r = random.choice(flist)
+    print(r)
+    fight = Image.open(str(r))
+
+    asset = user.avatar_url_as(size = 128)
+    asset2 = user2.avatar_url_as (size = 128)
+    data = BytesIO(await asset.read())
+    data2 = BytesIO(await asset2.read())
+    pfp2 = Image.open(data2)
+    pfp = Image.open(data)
+    draw = ImageDraw.Draw(fight)
+    user_name = user.name.title()
+    user2_name = user2.name.title()
+    print(user2_name, user_name)
+
+    if r == 'fight.jpg':
+        pfp = pfp.resize((200,200))
+        pfp2 = pfp2.resize((200,200))
+        fight.paste(pfp,(81,223))
+        fight.paste(pfp2,(703,223))
+        font = ImageFont.truetype('impact.ttf', 45)
+        draw.text((100,440), str(user_name),(251, 232, 255),  font=font)
+        draw.text((730,440), str(user2_name),(251, 232, 255),  font=font)
+    elif r == 'fight1.jpg':
+        pfp = pfp.resize((295,239))
+        pfp2 = pfp2.resize((295,239))
+        fight.paste(pfp,(93,205))
+        fight.paste(pfp2,(616,205))
+
+
+        font = ImageFont.truetype('impact.ttf', 45)
+        draw.text((150,585), user_name, (251, 232, 255), font=font)
+        draw.text((670,585), user2_name,(251, 232, 255),  font=font)
+
+
+    fight.save('fighting.jpg')
+
+    await ctx.send(file =discord.File("fighting.jpg"))                                
 
 
 
