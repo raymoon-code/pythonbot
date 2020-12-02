@@ -652,7 +652,27 @@ async def on_command_error(ctx, exc):
         await ctx.send(f'That command is on cooldown. Try again in {exc.retry_after:,.2f} secs.')
 
 
+@client.command(name='g')
+async def give_money(ctx, member: DiscordMember, coins):
+    '''Give coins to other user'''
+    await open_account(ctx.author)
+    users = await get_bank_data()
+    user = ctx.author
+    if int(coins)<0:
+        await ctx.send(f'The amount can not less than zero!!')
+        return
+    elif int(users[str(user.id)]['wallet']) < int(coins):
+        await ctx.send(f'You do not have enough money in your wallet')
+        return
 
+
+    await ctx.send(f'{user.name} successful gave  {coins} :coin::moneybag: to {member.display_name} :handshake::gift_heart:  !!')
+
+    users[str(user.id)]['wallet'] -= int(coins)
+    users[str(member.id)]['wallet'] += int(coins)
+
+    with open('mainbank.json','w') as f:
+        json.dump(users,f)
 
 
 
