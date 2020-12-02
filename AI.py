@@ -2,6 +2,7 @@ import discord
 from discord import Intents
 import random
 import os
+import PIL 
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 import json
