@@ -24,7 +24,7 @@ import datetime
 
 from aiohttp import request
 
-os.chdir(r'\\pythonbot')
+# os.chdir(r'\\pythonbot')
 youtube_dl.utils.bug_reports_message = lambda: ''
 # Guild = object()
 ytdl_format_options = {
