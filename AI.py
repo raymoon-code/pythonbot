@@ -466,8 +466,12 @@ async def fight(ctx, user1: discord.Member = None, user2: discord.Member = None,
     elif int(bet) < 0:
          await ctx.send(f'Betting amount can not less than zero !!!')
          pass
-         return                   
+         return 
                                 
+    elif user1 != ctx.author and  user2 != ctx.author:        
+        await ctx.send(f'You can not let others people fight with each others !!!')
+        pass
+        return                            
                             
  
 
