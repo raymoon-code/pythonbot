@@ -439,15 +439,18 @@ async def fight(ctx, user1: discord.Member = None, user2: discord.Member = None,
     await open_account(ctx.author)
     users = await get_bank_data()
     user = ctx.author
+    loser = user2
     
 
+
     if str(user1) == None or str(user2) == None:
-        user1 = ctx.author
+        user = ctx.author
+
         user2 = ctx.guild.get_member(721904320320241715)
         bet = 10
         await ctx.send(f'default beting amount {bet} coins:coin: :coin: !!!')
 
-    
+
     if user1 == user2:
 
         if user1 == ctx.author:
@@ -458,21 +461,32 @@ async def fight(ctx, user1: discord.Member = None, user2: discord.Member = None,
             await ctx.send(f'You can not let people fight with themself !!!')
             pass
             return
+
     elif int(bet) < 0:
-         await ctx.send(f'Betting amount can not less than zero !!!')
-         pass
-         return 
-                                
-    elif user1 != ctx.author and  user2 != ctx.author:        
+        await ctx.send(f'Betting amount can not less than zero !!!')
+        pass
+        return
+
+    elif user1 != ctx.author and  user2 != ctx.author:
+
         await ctx.send(f'You can not let others people fight with each others !!!')
         pass
-        return      
-                                
-    elif int(users[str(user.id)]['wallet']) < int(bet):
-        await ctx.send(f'You do not have enough money to bet!!!')
+        return
+
+    elif int(users[str(user1.id)]['wallet']) < int(bet):
+
+        await ctx.send(f'{user1.display_name} does not have enough money to bet!!!')
         pass
-        return                       
- 
+        return
+
+    elif int(users[str(user2.id)]['wallet']) < int(bet):
+
+        await ctx.send(f'{user2.display_name} does not have enough money to bet!!!')
+        pass
+        return
+
+
+
 
     flist = ['fight.jpg', 'fight1.jpg']
     r = random.choice(flist)
@@ -497,7 +511,7 @@ async def fight(ctx, user1: discord.Member = None, user2: discord.Member = None,
         pfp2 = pfp2.resize((200,200))
         fight.paste(pfp,(81,223))
         fight.paste(pfp2,(703,223))
-        font = ImageFont.truetype('Impacted.ttf', 45)
+        font = ImageFont.truetype('impact.ttf', 45)
 
         draw.text((100,440), str(user_name),(251, 232, 255), font=font)
         draw.text((730,440), str(user2_name),(251, 232, 255), font=font)
@@ -508,7 +522,7 @@ async def fight(ctx, user1: discord.Member = None, user2: discord.Member = None,
         fight.paste(pfp2,(616,205))
 
 
-        font = ImageFont.truetype('Impacted.ttf', 45)
+        font = ImageFont.truetype('impact.ttf', 45)
 
         draw.text((150,585), user_name,(251, 232, 255), font=font)
         draw.text((670,585), user2_name,(251, 232, 255), font=font)
@@ -555,7 +569,8 @@ async def fight(ctx, user1: discord.Member = None, user2: discord.Member = None,
             ctx.send('No API found')
     await asyncio.sleep(5)
     winner = random.choice(player)
-    await ctx.send(f'{winner} Won and received {bet} coins :coin: :coin: !!')
+    await ctx.send(f'{winner} Won and received {bet} coins:coin::coin::moneybag::money_mouth:  !!'
+                   f'{user2.name.title()} lose {bet}:money_with_wings: :money_with_wings: ')
 
     await open_account(ctx.author)
     users = await get_bank_data()
@@ -563,9 +578,11 @@ async def fight(ctx, user1: discord.Member = None, user2: discord.Member = None,
 
 
     if winner == ctx.author.name.title():
-        users[str(user.id)]['wallet'] += int(bet)
+        users[str(user1.id)]['wallet'] += int(bet)
+        users[str(user2.id)]['wallet'] -= int(bet)
     else:
-        users[str(user.id)]['wallet'] -= int(bet)
+        users[str(user1.id)]['wallet'] -= int(bet)
+        users[str(user2.id)]['wallet'] += int(bet)
 
     with open('mainbank.json','w') as f:
         json.dump(users,f)
