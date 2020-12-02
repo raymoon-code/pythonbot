@@ -25,6 +25,11 @@ from discord import guild
 import datetime
 
 from aiohttp import request
+from discord.ext.commands import (CommandNotFound,BadArgument,MissingRequiredArgument,CommandOnCooldown)
+from discord.errors import HTTPException, Forbidden
+
+IGNORE_EXCEPTIONS = (CommandNotFound, BadArgument)
+
 
 # os.chdir(r'\\pythonbot')
 youtube_dl.utils.bug_reports_message = lambda: ''
@@ -635,7 +640,16 @@ async def get_bank_data():
         users = json.load(f)
     return users
 
+@client.event
+async def on_command_error(ctx, exc):
+    if any([isinstance(exc, error)for error in IGNORE_EXCEPTIONS]):
+        pass
 
+    elif isinstance(exc, MissingRequiredArgument):
+        await ctx.send(" One or more required arguments are missing.")
+
+    elif isinstance(exc, CommandOnCooldown):
+        await ctx.send(f'That command is on cooldown. Try again in {exc.retry_after:,.2f} secs.')
 
 
 
