@@ -537,7 +537,7 @@ async def fight(ctx, user1: discord.Member = None, user2: discord.Member = None,
             ctx.send('No API found')
     await asyncio.sleep(5)
     winner = random.choice(player)
-    await ctx.send(f'{winner} Won and received {bet} coins!!')
+    await ctx.send(f'{winner} Won and received {bet} coins :coin: :coin: !!')
 
     await open_account(ctx.author)
     users = await get_bank_data()
