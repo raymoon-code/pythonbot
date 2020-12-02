@@ -434,11 +434,27 @@ async def wanted(ctx, user: discord.Member = None):
     await ctx.send(file =discord.File("profile.jpg"))
 
 @client.command(name='f')
-async def fight(ctx, user: discord.Member = None, user2: discord.Member = None, *,bet):
+async def fight(ctx, user1: discord.Member = None, user2: discord.Member = None, *,bet):
     """fight with people f user1 user2."""
-    if user == None:
-        user = ctx.author
-        user2 = ctx.author
+    await open_account(ctx.author)
+    users = await get_bank_data()
+    user = ctx.author
+    print(user, user2)
+
+    if user1 == None or user2 == None:
+        user1 = ctx.author        
+        user2 = ctx.guild.get_member(721904320320241715)
+        bet = 10
+        await ctx.send(f'default beting amount {bet} coins!!!')
+
+    if int(users[str(user.id)]['wallet']) < int(bet):
+
+        await ctx.send(f'You do not have enough money to bet!!!')
+        pass
+
+        return
+                            
+ 
 
     flist = ['fight.jpg', 'fight1.jpg']
     r = random.choice(flist)
