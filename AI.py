@@ -423,14 +423,14 @@ async def wanted(ctx, user: discord.Member = None):
 
 @client.command(name='f')
 async def fight(ctx, user: discord.Member = None, user2: discord.Member = None):
-
+    """fight people with f <user1 name> <user2 name>.""" 
     if user == None:
         user = ctx.author
         user2 = ctx.author
 
     flist = ['fight.jpg', 'fight1.jpg']
     r = random.choice(flist)
-    print(r)
+    
     fight = Image.open(str(r))
 
     asset = user.avatar_url_as(size = 128)
@@ -442,7 +442,7 @@ async def fight(ctx, user: discord.Member = None, user2: discord.Member = None):
     draw = ImageDraw.Draw(fight)
     user_name = user.name.title()
     user2_name = user2.name.title()
-    print(user2_name, user_name)
+    
 
     if r == 'fight.jpg':
         pfp = pfp.resize((200,200))
