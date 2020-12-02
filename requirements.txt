@@ -1,4 +1,4 @@
 discord.py
 asyncio
 youtube_dl
-PIL
+pillow
