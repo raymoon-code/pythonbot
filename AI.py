@@ -620,7 +620,7 @@ async def beg(ctx):
     users = await get_bank_data()
     user = ctx.author
     earnings = random.randrange(101)
-    await ctx.send(f'Someone gave you {earnings} coins!!')
+    await ctx.send(f'{ctx.author.name.title()} Someone gave you {earnings} coins!!:coin::moneybag:')
 
     users[str(user.id)]['wallet'] += earnings
 
