@@ -28,7 +28,7 @@ from aiohttp import request
 from discord.ext.commands import (CommandNotFound,BadArgument,MissingRequiredArgument,CommandOnCooldown)
 from discord.errors import HTTPException
 
-IGNORE_EXCEPTIONS = (CommandNotFound, BadArgument)
+
 
 
 # os.chdir(r'\\pythonbot')
@@ -445,7 +445,8 @@ async def fight(ctx, user1: discord.Member = None, user2: discord.Member = None,
     users = await get_bank_data()
     user = ctx.author
     loser = user2
-    
+
+
 
 
     if str(user1) == None or str(user2) == None:
@@ -480,15 +481,18 @@ async def fight(ctx, user1: discord.Member = None, user2: discord.Member = None,
 
     elif int(users[str(user1.id)]['wallet']) < int(bet):
 
-        await ctx.send(f'{user1.display_name} does not have enough money to bet!!!')
+        await ctx.send(f'{user1.display_name.title()} does not have enough money to bet!!!')
         pass
         return
 
     elif int(users[str(user2.id)]['wallet']) < int(bet):
 
-        await ctx.send(f'{user2.display_name} does not have enough money to bet!!!')
+        await ctx.send(f'{user2.display_name.title()} does not have enough money to bet!!!')
         pass
         return
+
+    # elif user1 == guild.Guild.get_member(721904320320241715):
+
 
 
 
@@ -508,7 +512,7 @@ async def fight(ctx, user1: discord.Member = None, user2: discord.Member = None,
     draw = ImageDraw.Draw(fight)
     user_name = user1.name.title()
     user2_name = user2.name.title()
-    player = [user_name, user2_name]
+    players = [user1.name, user2.name]
 
 
     if r == 'fight.jpg':
@@ -572,27 +576,27 @@ async def fight(ctx, user1: discord.Member = None, user2: discord.Member = None,
             await ctx.send(embed=embed)
         else:
             ctx.send('No API found')
-    await asyncio.sleep(5)
-    winner = random.choice(players)
-    if user1 == winner:                            
-        lose = user2
-    else:
-         lose = user1                       
-    await ctx.send(f'{winner} Won and received {bet} coins:coin::coin::moneybag::money_mouth:  !!\n'
-                   f'{lose.title()} lose {bet}:money_with_wings: :money_with_wings: ')
+
+    await asyncio.sleep(3)
+    # winner = random.choice(players)
+    winner = players.pop(random.randint(0,1))
+    loser = players[0]
+
+    await ctx.send(f'{winner.title()} Won and received {bet} coins:coin::coin::moneybag::money_mouth:  !!\n'
+                   f'{loser.title()} lose {bet} :money_with_wings: :money_with_wings: ')
 
     await open_account(ctx.author)
     users = await get_bank_data()
     user = ctx.author
 
+    # print(f'{winner},{loser}, user : {user}')
 
-    if winner == ctx.author.name.title():
+    if winner == user1.name:
         users[str(user1.id)]['wallet'] += int(bet)
         users[str(user2.id)]['wallet'] -= int(bet)
     else:
         users[str(user1.id)]['wallet'] -= int(bet)
         users[str(user2.id)]['wallet'] += int(bet)
-
     with open('mainbank.json','w') as f:
         json.dump(users,f)
 
@@ -646,6 +650,7 @@ async def get_bank_data():
 
 @client.event
 async def on_command_error(ctx, exc):
+    IGNORE_EXCEPTIONS = (CommandNotFound, BadArgument)                            
     if any([isinstance(exc, error)for error in IGNORE_EXCEPTIONS]):
         pass
 
