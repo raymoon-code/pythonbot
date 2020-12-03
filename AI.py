@@ -26,7 +26,7 @@ import datetime
 
 from aiohttp import request
 from discord.ext.commands import (CommandNotFound,BadArgument,MissingRequiredArgument,CommandOnCooldown)
-from discord.errors import HTTPException, Forbidden
+from discord.errors import HTTPException
 
 IGNORE_EXCEPTIONS = (CommandNotFound, BadArgument)
 
@@ -574,9 +574,12 @@ async def fight(ctx, user1: discord.Member = None, user2: discord.Member = None,
             ctx.send('No API found')
     await asyncio.sleep(5)
     winner = random.choice(players)
-                               
+    if user1 == winner:                            
+        lose = user2
+    else:
+         lose = user1                       
     await ctx.send(f'{winner} Won and received {bet} coins:coin::coin::moneybag::money_mouth:  !!\n'
-                   f'{user2.title()} lose {bet}:money_with_wings: :money_with_wings: ')
+                   f'{lose.title()} lose {bet}:money_with_wings: :money_with_wings: ')
 
     await open_account(ctx.author)
     users = await get_bank_data()
