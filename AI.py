@@ -666,7 +666,7 @@ async def give_money(ctx, member: DiscordMember, coins):
         return
 
 
-    await ctx.send(f'{user.name} successful gave  {coins} :coin::moneybag: to {member.display_name} :handshake::gift_heart:  !!')
+    await ctx.send(f'{user.name.title()} successful gave  {coins} :coin::moneybag: to {member.display_name.title()} :handshake::gift_heart:  !!')
 
     users[str(user.id)]['wallet'] -= int(coins)
     users[str(member.id)]['wallet'] += int(coins)
